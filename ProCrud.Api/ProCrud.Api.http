@@ -1,0 +1,6 @@
+@ProCrud.Api_HostAddress = http://localhost:5198
+
+GET {{ProCrud.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
