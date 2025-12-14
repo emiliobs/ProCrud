@@ -1,0 +1,55 @@
+﻿@page "/categories"
+
+@inject CategoriesApi CategoriesApi
+@inject ISnackbar Snackbar
+
+<MudPaper Elevation="1" Class="pa-4">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+        <MudText Typo="Typo.h5">Categories</MudText>
+
+        <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+            <MudTextField @bind-Value="_search"
+                          Placeholder="Search by name..."
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          Immediate="true"
+                          DebounceInterval="250"
+                          @bind-Value:after="ApplyFilterAsync" />
+            <MudButton Variant="Variant.Outlined"
+                       OnClick="ReloadAsync"
+                       StartIcon="@Icons.Material.Filled.Refresh">
+                Refresh
+            </MudButton>
+        </MudStack>
+    </MudStack>
+
+    <MudDivider Class="my-4" />
+
+    @if (_isLoading)
+    {
+        <MudStack AlignItems="AlignItems.Center" Class="py-8">
+            <MudProgressCircular Indeterminate="true" Size="Size.Large" />
+            <MudText Class="mt-3" Typo="Typo.body2">Loading categories...</MudText>
+        </MudStack>
+    }
+    else
+    {
+        <MudTable Items="_filtered" Hover="true" Dense="true" Elevation="0">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>ID</MudTh>
+            </HeaderContent>
+
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="ID">
+                    <MudText Typo="Typo.caption">@context.Id</MudText>
+                </MudTd>
+            </RowTemplate>
+
+            <NoRecordsContent>
+                <MudText Typo="Typo.body2">No categories found.</MudText>
+            </NoRecordsContent>
+        </MudTable>
+    }
+</MudPaper>

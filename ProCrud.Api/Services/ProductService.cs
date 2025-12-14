@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProCrud.Api.Data;
 using ProCrud.Shared.DTOs;
-using ProCrud.Shared.DTOs.Entities;
+using ProCrud.Shared.Entities;
 
 namespace ProCrud.Api.Services;
 

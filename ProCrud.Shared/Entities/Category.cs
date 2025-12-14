@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ProCrud.Shared.DTOs.Entities;
+namespace ProCrud.Shared.Entities;
 
 public class Category
 {
