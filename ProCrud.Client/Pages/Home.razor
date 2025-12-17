@@ -1,7 +1,68 @@
 ﻿@page "/"
+@using ProCrud.Shared.DTOs
 
-<PageTitle>Home</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Large" Class="my-4">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4">
+        <MudText Typo="Typo.h4">Productos</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_search"
+                      Placeholder="Buscar..."
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0"
+                      DebounceInterval="500"
+                      OnDebounceIntervalElapsed="OnSearchChanged" />
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   OnClick="CreateAsync">
+            Crear
+        </MudButton>
+    </MudStack>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+    @if (_loading)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        <MudTable Items="_items" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="4">
+            <HeaderContent>
+                <MudTh>Nombre</MudTh>
+                <MudTh>Categoría</MudTh>
+                <MudTh>Precio</MudTh>
+                <MudTh>Estado</MudTh>
+                <MudTh>Acciones</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nombre">@context.Name</MudTd>
+                <MudTd DataLabel="Categoría">
+                    @* Buscamos el nombre de la categoría de forma segura *@
+                    @if (_categories != null)
+                    {
+                        @(_categories.FirstOrDefault(c => c.Id == context.CategoryId)?.Name ?? "Sin Categoría")
+                    }
+                </MudTd>
+                <MudTd DataLabel="Precio">@context.Price.ToString("C")</MudTd>
+                <MudTd DataLabel="Estado">
+                    @if (context.IsActive)
+                    {
+                        <MudChip T="string" Color="Color.Success" Size="Size.Small">Activo</MudChip>
+                    }
+                    else
+                    {
+                        <MudChip T="string" Color="Color.Error" Size="Size.Small">Inactivo</MudChip>
+                    }
+                </MudTd>
+                <MudTd DataLabel="Acciones">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="@(() => EditAsync(context.Id))" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => DeleteAsync(context.Id))" />
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

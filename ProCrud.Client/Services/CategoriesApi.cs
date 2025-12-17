@@ -1,13 +1,12 @@
 ﻿using ProCrud.Shared.DTOs;
 using System.Net.Http.Json;
 
-namespace ProCrud.Client.Services
+namespace ProCrud.Client.Services;
+
+public class CategoriesApi(HttpClient httpClient)
 {
-    public class CategoriesApi(HttpClient httpClient)
+    public async Task<List<CategoryDto>> GetAllAsync()
     {
-        public async Task<List<CategoryDto>> GetAllAsync()
-        {
-            return await httpClient.GetFromJsonAsync<List<CategoryDto>>("api/categories");
-        }
+        return await httpClient.GetFromJsonAsync<List<CategoryDto>>("api/categories");
     }
 }
